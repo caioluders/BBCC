@@ -181,7 +181,7 @@ void handle_event(int fd,char *buf){
 }
 
 // from https://stackoverflow.com/questions/8436841/how-to-recursively-list-directories-in-c-on-linux
-void mount_base_table( const char *name, int indent ) {
+void mount_base_table( const char *name ) {
 	DIR *dir;
     struct dirent *entry;
 	int i , f = 0 ;
@@ -198,9 +198,8 @@ void mount_base_table( const char *name, int indent ) {
 			if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)
 				continue;
 			snprintf(path, sizeof(path), "%s/%s", name, entry->d_name);
-			strcpy(baseDict[n],path+strlen(serverPath)) ;
 			n += 1 ;
-			mount_base_table(path, indent + 2);
+			mount_base_table(path);
 		} else {
 			char path[1024];
 			for ( i = 0 ; i < sizeof(index_files)/sizeof(index_files[0]) ; i++ ) {
