@@ -28,7 +28,6 @@ contact: g3ol4d0[at]gmail[dot]com
 #include <stdint.h>
 #include <sys/types.h>
 #include <sys/inotify.h>
-#include <linux/inotify.h>
 
 #define MAX_EVENTS 256
 #define BASE_MAX 36 // 36 is the base-n maximum, because of strtol :P
@@ -226,7 +225,7 @@ int main() {
 		baseDict[i] = malloc(1024*sizeof(char)) ;
 	}
 
-	mount_base_table(serverPath,0) ; 
+	mount_base_table(serverPath) ; 
 	
 	qsort( baseDict , n-1 , sizeof(char *) , cmp ) ; // sorting the array , because readir does not grants it
 
