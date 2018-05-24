@@ -198,7 +198,6 @@ void mount_base_table( const char *name ) {
 			if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0)
 				continue;
 			snprintf(path, sizeof(path), "%s/%s", name, entry->d_name);
-			n += 1 ;
 			mount_base_table(path);
 		} else {
 			char path[1024];
