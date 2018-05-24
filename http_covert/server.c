@@ -27,6 +27,7 @@ contact: g3ol4d0[at]gmail[dot]com
 #include <unistd.h>
 #include <stdint.h>
 #include <sys/types.h>
+#include <sys/inotify.h>
 #include <linux/inotify.h>
 
 #define MAX_EVENTS 256
