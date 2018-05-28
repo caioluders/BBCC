@@ -46,37 +46,32 @@ def spider(url,path) :
 		(?:"|')%s)                    # End newline delimiter
 		""" % ("",""), re.VERBOSE)
 
-	s = send_request(url)
+	s = send_request(url+"/"+path)
 
 	if s.status_code != 200 :
 		return 
 
+	if s.headers['Content-Type'] != "text/html" : 
+		return 
+
 	items = re.findall(regex, s.text)
 	items = list(set(items))
-
 	for l in items :
-		group = list(filter(None, l))
-		true_url = urlparse(group[0]).path
-		true_url = true_url.replace(u'"',u"")
-		splitted_url = true_url.split("/")
-		splitted_url.pop()
-		temp_url = ""
-		for sub_path in splitted_url :
-			if sub_path != "" :
-				temp_url += "/"+sub_path
-				if temp_url not in checked_urls :
-					checked_urls.add(temp_url)
-		if true_url not in checked_urls :
-			checked_urls.add(urlparse(group[0]).path)
-			spider(url,true_url)
+		group = list(filter(None, l))[1]
+		parsed = urlparse(group)
+		if parsed.netloc not in url :
+			break
+		if group not in checked_urls :
+			checked_urls.add(group)
+			spider(url,group)
 
 def main() :
-	URL = "http://localhost:8080/"	
+	URL = "http://localhost:8080"	
 	PATH  = ""
 	spider(URL,PATH)
 
 	for l in checked_urls :
-		print list(l)
+		print l
 
 	#while(1) :
 	#	c = input('$ ')
