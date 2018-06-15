@@ -109,7 +109,7 @@ void parse_log( char * lastLine ) {
 
 	if ( strcmp( pathClean , "/" ) == 0 ) {
 		char * t ;
-		decodeBuffer[nth].buffer[decodeBuffer[nth].bufLen] = strtol( decodeBuffer[nth].charBuffer , t , n ) ;
+		decodeBuffer[nth].buffer[decodeBuffer[nth].bufLen] = strtol( decodeBuffer[nth].charBuffer , &t , n ) ;
 		decodeBuffer[nth].bufLen += 1 ;
 		strcpy( decodeBuffer[nth].charBuffer , "" ) ;
 		decodeBuffer[nth].charLen = 0 ;
@@ -124,7 +124,7 @@ void parse_log( char * lastLine ) {
 	char *temp ;
 
 	// check is the end of the message
-	if ( strtol( decodeBuffer[nth].buffer[decodeBuffer[nth].bufLen] , &temp , n ) == 10 ) { // 10 == 0x0a == my EOF
+	if ( strtol( &decodeBuffer[nth].buffer[decodeBuffer[nth].bufLen] , &temp , n ) == 10 ) { // 10 == 0x0a == my EOF
 		if ( decodeBuffer[nth].auth == 1 ) {
 			execute_message( decodeBuffer[nth].buffer ) ;
 		} else if ( strcmp( decodeBuffer[nth].buffer , knockingSecret ) == 0 ) {
