@@ -37,6 +37,7 @@ contact: g3ol4d0[at]gmail[dot]com
 typedef struct decodeSingle { // struct to store a buffer for each IP that connects
 	char buffer[1024] ; // a buffer for the whole data
 	char charBuffer[1024] ; // a buffer for each char
+	int charLen ;
 	int bufLen ;
 	int auth ; // auth flag
 	char *ip ;
@@ -84,6 +85,7 @@ void parse_log( char * lastLine ) {
 	if ( !flag ) {
 		decodeBuffer[iBuffer].ip = path ; // add ip if not found
 		decodeBuffer[iBuffer].bufLen = 0 ;
+		decodeBuffer[iBuffer].charLen = 0 ;
 		decodeBuffer[iBuffer].auth = 0 ;
 		iBuffer += 1 ;
 	}
@@ -93,6 +95,8 @@ void parse_log( char * lastLine ) {
 	}
 	
 	pathClean = strtok( path, "?" ) ;
+
+	printf("%s\n",pathClean );
 
 	// write the encoded data to the buffer
 	for ( i = 0 ; i < n ; i++ ) {

