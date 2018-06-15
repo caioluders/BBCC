@@ -34,6 +34,7 @@ def send_request(url):
     return content
 
 def send_encoded(url,command) :
+	
 	for c in command :
 		c = toStr(c)
 		for x in c :
