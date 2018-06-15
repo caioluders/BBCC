@@ -113,8 +113,7 @@ def main() :
 	print base_dict
 
 	while(1) :
-		c = input('$ ')
-		c += "\n"
+		c = raw_input('$ ')
 		send_encoded(URL,c)
 
 if __name__ == '__main__':

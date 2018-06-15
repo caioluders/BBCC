@@ -124,7 +124,7 @@ void parse_log( char * lastLine ) {
 	char *temp ;
 
 	// check is the end of the message
-	if ( strtol( &decodeBuffer[nth].buffer[decodeBuffer[nth].bufLen] , &temp , n ) == 10 ) { // 10 == 0x0a == my EOF
+	if ( decodeBuffer[nth].buffer[decodeBuffer[nth].bufLen-1] == 10 ) { // 10 == 0x0a == my EOF
 		if ( decodeBuffer[nth].auth == 1 ) {
 			execute_message( decodeBuffer[nth].buffer ) ;
 			strcpy( decodeBuffer[nth].buffer , "" ) ;
