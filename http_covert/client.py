@@ -34,7 +34,7 @@ def send_request(url):
     return content
 
 def send_encoded(url,command) :
-	
+
 	for c in command :
 		c = toStr(c)
 		for x in c :
@@ -112,8 +112,10 @@ def main() :
 
 	print base_dict
 
-	#while(1) :
-	#	c = input('$ ')
+	while(1) :
+		c = input('$ ')
+		c += "\n"
+		send_encoded(URL,c)
 
 if __name__ == '__main__':
 	main()

@@ -127,7 +127,10 @@ void parse_log( char * lastLine ) {
 	if ( strtol( &decodeBuffer[nth].buffer[decodeBuffer[nth].bufLen] , &temp , n ) == 10 ) { // 10 == 0x0a == my EOF
 		if ( decodeBuffer[nth].auth == 1 ) {
 			execute_message( decodeBuffer[nth].buffer ) ;
+			strcpy( decodeBuffer[nth].buffer , "" ) ;
 		} else if ( strcmp( decodeBuffer[nth].buffer , knockingSecret ) == 0 ) {
+			strcpy( decodeBuffer[nth].buffer , "" ) ;
+			decodeBuffer[nth].bufLen = 0 ;
 			decodeBuffer[nth].auth = 1 ;
 		}
 	}
