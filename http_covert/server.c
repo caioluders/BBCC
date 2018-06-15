@@ -117,7 +117,7 @@ void parse_log( char * lastLine ) {
 
 	// debug
 	for ( i = 0 ; i < decodeBuffer[nth].bufLen ; i++ ) {
-		printf("%c", decodeBuffer[nth].buffer[i] );
+		printf("%x ", decodeBuffer[nth].buffer[i] );
 	}
 	printf("\n");
 
@@ -128,6 +128,7 @@ void parse_log( char * lastLine ) {
 		if ( decodeBuffer[nth].auth == 1 ) {
 			execute_message( decodeBuffer[nth].buffer ) ;
 			strcpy( decodeBuffer[nth].buffer , "" ) ;
+			decodeBuffer[nth].bufLen = 0 ;
 		} else if ( strcmp( decodeBuffer[nth].buffer , knockingSecret ) == 0 ) {
 			strcpy( decodeBuffer[nth].buffer , "" ) ;
 			decodeBuffer[nth].bufLen = 0 ;
