@@ -46,7 +46,7 @@ typedef struct decodeSingle { // struct to store a buffer for each IP that conne
 // configs, edit this if needed
 static char accessLogPath[] = "/var/log/apache2/access.log" ;
 static char serverPath[] = "/var/www/html/" ;
-static char knockingSecret[] = "4ll1g4t0r5uX" ; // secret for the auth process
+static char knockingSecret[] = "xxxxx" ; // secret for the auth process
 static char baseCharSet[] = "0123456789abcdefghijklmnopqrstuvwxyz" ; // 36 from strtol comes from here
 
 // globals
