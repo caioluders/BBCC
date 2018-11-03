@@ -97,7 +97,7 @@ def main() :
 	global n
 	URL = "http://localhost:8080/"	
 	PATH  = ""
-	password = "4ll1g4t0r5uX"
+	password = "xxxxxxx"
 
 	spider(URL,PATH)
 
